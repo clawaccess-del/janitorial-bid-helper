@@ -138,6 +138,49 @@ export function Home() {
         </div>
       </section>
 
+      {/* Beta Partner Promo Section */}
+      <section style={{ marginTop: '4rem', marginBottom: '4rem' }}>
+        <div className="card" style={{ border: '1px solid var(--primary)', backgroundColor: 'rgba(59, 130, 246, 0.03)', padding: '3rem', borderRadius: '16px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, right: 0, padding: '0.5rem 1rem', backgroundColor: 'var(--primary)', color: '#ffffff', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', borderBottomLeftRadius: '12px' }}>
+            Limited Offer
+          </div>
+          <div className="grid grid-2col align-center">
+            <div>
+              <span style={{ color: 'var(--primary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.85rem' }}>Beta Launch Partner</span>
+              <h2 style={{ marginTop: '0.5rem', marginBottom: '1rem', color: '#ffffff' }}>Get Our Complete Bidding Services for Free</h2>
+              <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
+                Janitorial Bid Helper is brand new, and we want to guarantee it delivers massive value to commercial cleaning businesses. We are looking for our very first partner to walk through the entire onboarding and bidding process.
+              </p>
+              <ul className="checklist" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                <li className="checklist-item">
+                  <CheckCircle size={16} style={{ color: 'var(--primary)' }} />
+                  <span><strong>100% Free Onboarding & Setup</strong> (Valued at $1,500).</span>
+                </li>
+                <li className="checklist-item">
+                  <CheckCircle size={16} style={{ color: 'var(--primary)' }} />
+                  <span><strong>Free First Bid Opportunity Analysis</strong> (Valued at $750).</span>
+                </li>
+                <li className="checklist-item">
+                  <CheckCircle size={16} style={{ color: 'var(--primary)' }} />
+                  <span><strong>Lifetime Upgrade Access</strong>: Get the final version for free as well.</span>
+                </li>
+              </ul>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ padding: '2rem', backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                <h3 style={{ marginBottom: '1rem', color: '#ffffff' }}>Apply for Beta Access</h3>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+                  We are selecting only the first eligible company to receive this complete package for free in exchange for honest feedback.
+                </p>
+                <Link to="/contact/?promo=beta-partner" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+                  Claim Free Access <ArrowRight size={16} />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section style={{ paddingBottom: '2rem' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '3rem' }}>Frequently Asked Questions</h2>
@@ -574,7 +617,14 @@ export function Pricing() {
       <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
         <span style={{ color: 'var(--primary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.9rem' }}>Simple Offers</span>
         <h1 style={{ marginTop: '0.5rem' }}>Service Engagement Plans</h1>
-        <p style={{ maxWidth: '600px', margin: '0 auto' }}>Clear, transparent pricing with no hidden ranges or administrative surprises.</p>
+        <p style={{ maxWidth: '600px', margin: '0 auto', marginBottom: '1.5rem' }}>Clear, transparent pricing with no hidden ranges or administrative surprises.</p>
+        
+        {/* Quick Promo Banner */}
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 1.25rem', backgroundColor: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '99px', fontSize: '0.9rem' }}>
+          <span style={{ backgroundColor: 'var(--primary)', color: '#ffffff', padding: '0.2rem 0.65rem', borderRadius: '99px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Beta Launch</span>
+          <span style={{ color: '#ffffff' }}>Our very first client gets all services <strong>100% free</strong>.</span>
+          <a href="#beta-partner-promo" style={{ color: 'var(--primary)', textDecoration: 'underline', fontWeight: 600 }}>Learn More &rarr;</a>
+        </div>
       </div>
 
       {/* SECTION 1: ONBOARDING & PROPOSAL SERVICES */}
@@ -681,6 +731,30 @@ export function Pricing() {
           >
             {loadingPlan === 'Statewide Radar Subscription' ? 'Loading...' : 'Subscribe'}
           </button>
+        </div>
+      </div>
+
+      {/* Detailed Promo Section */}
+      <div id="beta-partner-promo" className="card" style={{ border: '1px solid var(--primary)', backgroundColor: 'rgba(59, 130, 246, 0.02)', padding: '2.5rem', borderRadius: '12px', marginBottom: '4rem', marginTop: '4rem' }}>
+        <div className="flex align-center gap-3" style={{ marginBottom: '1rem', flexWrap: 'wrap' }}>
+          <div style={{ padding: '0.75rem', backgroundColor: 'rgba(59, 130, 246, 0.08)', borderRadius: '50%', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Layers size={24} />
+          </div>
+          <div>
+            <h3 style={{ margin: 0, color: '#ffffff' }}>Beta Launch Partner Program</h3>
+            <span style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 600 }}>Limited Opportunity &mdash; 1 Slot Available</span>
+          </div>
+        </div>
+        <p style={{ fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
+          To ensure Janitorial Bid Helper delivers the best possible experience and compliance results, we are launching a Beta Partner Program. The first janitorial company to sign up will receive our **Bid-Ready Setup** ($1,500 value) and their first **Commercial Bid Analysis** ($750 value) completely free of charge. 
+        </p>
+        <p style={{ fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--text-secondary)', marginTop: '1rem' }}>
+          We will work closely with you to set up your profiles and analyze your bid, using your feedback to optimize our workflows. Once the platform upgraded version is ready, you will receive the final, complete version for free as well.
+        </p>
+        <div style={{ marginTop: '2rem' }}>
+          <Link to="/contact/?promo=beta-partner" className="btn btn-primary">
+            Apply for Free Setup <ArrowRight size={16} />
+          </Link>
         </div>
       </div>
 
