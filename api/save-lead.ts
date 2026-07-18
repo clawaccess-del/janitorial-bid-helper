@@ -115,8 +115,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   return res.status(200).json({ success: true, dbSaved, emailSent, data: dbData });
-  } catch (error: any) {
-    console.error('Supabase save-lead error:', error);
-    return res.status(500).json({ error: error.message || 'Failed to save lead to database.' });
-  }
 }
