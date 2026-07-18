@@ -808,6 +808,7 @@ export function Contact() {
   const [searchParams] = useSearchParams();
   const promo = searchParams.get('promo');
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ 
     name: '', 
     company: '', 
@@ -817,9 +818,29 @@ export function Contact() {
     reason: promo === 'beta-partner' ? 'Applying for the Free Beta Partner Program' : 'General Inquiry'
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setSubmitted(true);
+      } else {
+        alert(data.error || 'Failed to send message.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred while sending your request. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -935,8 +956,8 @@ export function Contact() {
                 />
               </div>
 
-              <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
-                Send Request <ArrowRight size={16} />
+              <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+                {loading ? 'Sending...' : 'Send Request'} <ArrowRight size={16} />
               </button>
             </form>
           ) : (
