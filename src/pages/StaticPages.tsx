@@ -149,7 +149,7 @@ export function Home() {
               <span style={{ color: 'var(--primary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.85rem' }}>Beta Launch Partner</span>
               <h2 style={{ marginTop: '0.5rem', marginBottom: '1rem', color: '#ffffff' }}>Get Our Complete Bidding Services for Free</h2>
               <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
-                Janitorial Bid Helper is brand new, and we want to guarantee it delivers massive value to commercial cleaning businesses. We are looking for our very first partner to walk through the entire onboarding and bidding process.
+                Janitorial Bid Helper is brand new, and we want to guarantee it delivers massive value to commercial cleaning businesses. We are looking for our first three partners to walk through the entire onboarding and bidding process.
               </p>
               <ul className="checklist" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                 <li className="checklist-item">
@@ -170,7 +170,7 @@ export function Home() {
               <div style={{ padding: '2rem', backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
                 <h3 style={{ marginBottom: '1rem', color: '#ffffff' }}>Apply for Beta Access</h3>
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-                  We are selecting only the first eligible company to receive this complete package for free in exchange for honest feedback.
+                  We are selecting only the first three eligible companies to receive this complete package for free in exchange for honest feedback.
                 </p>
                 <Link to="/contact/?promo=beta-partner" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
                   Claim Free Access <ArrowRight size={16} />
@@ -622,7 +622,7 @@ export function Pricing() {
         {/* Quick Promo Banner */}
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 1.25rem', backgroundColor: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '99px', fontSize: '0.9rem' }}>
           <span style={{ backgroundColor: 'var(--primary)', color: '#ffffff', padding: '0.2rem 0.65rem', borderRadius: '99px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Beta Launch</span>
-          <span style={{ color: '#ffffff' }}>Our very first client gets all services <strong>100% free</strong>.</span>
+          <span style={{ color: '#ffffff' }}>Our first three clients get all services <strong>100% free</strong>.</span>
           <a href="#beta-partner-promo" style={{ color: 'var(--primary)', textDecoration: 'underline', fontWeight: 600 }}>Learn More &rarr;</a>
         </div>
       </div>
@@ -742,11 +742,11 @@ export function Pricing() {
           </div>
           <div>
             <h3 style={{ margin: 0, color: '#ffffff' }}>Beta Launch Partner Program</h3>
-            <span style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 600 }}>Limited Opportunity &mdash; 1 Slot Available</span>
+            <span style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 600 }}>Limited Opportunity &mdash; 3 Slots Available</span>
           </div>
         </div>
         <p style={{ fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
-          To ensure Janitorial Bid Helper delivers the best possible experience and compliance results, we are launching a Beta Partner Program. The first janitorial company to sign up will receive our **Bid-Ready Setup** ($1,500 value) and their first **Commercial Bid Analysis** ($750 value) completely free of charge. 
+          To ensure Janitorial Bid Helper delivers the best possible experience and compliance results, we are launching a Beta Partner Program. The first three janitorial companies to sign up will receive our **Bid-Ready Setup** ($1,500 value) and their first **Commercial Bid Analysis** ($750 value) completely free of charge. 
         </p>
         <p style={{ fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--text-secondary)', marginTop: '1rem' }}>
           We will work closely with you to set up your profiles and analyze your bid, using your feedback to optimize our workflows. Once the platform upgraded version is ready, you will receive the final, complete version for free as well.
