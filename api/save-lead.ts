@@ -34,6 +34,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Database configuration missing.' });
   }
 
+  let dbSaved = false;
+  let dbData = null;
+
   try {
     const response = await fetch(`${supabaseUrl}/rest/v1/leads`, {
       method: 'POST',
@@ -52,58 +55,66 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })
     });
 
-    if (!response.ok) {
+    if (response.ok) {
+      dbSaved = true;
+      dbData = await response.json();
+    } else {
       const errorText = await response.text();
-      throw new Error(`Supabase API responded with status ${response.status}: ${errorText}`);
+      console.warn(`Supabase API responded with status ${response.status}: ${errorText}`);
     }
+  } catch (error: any) {
+    console.error('Graceful failure: Supabase save-lead error:', error);
+  }
 
-    const data = await response.json();
-
-    // 2. Send email notification via Resend if key is configured
-    if (resendApiKey) {
-      try {
-        await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendApiKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            from: 'Janitorial Bid Helper <onboarding@resend.dev>',
-            to: ['operator@janitorialbidhelper.com', 'tysonseo@gmail.com'],
-            subject: `New Readiness Audit: ${companyName} (${score || 0}%)`,
-            html: `
-              <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;">
-                <h2 style="color: #10b981; margin-bottom: 20px; border-bottom: 2px solid #10b981; padding-bottom: 10px;">New Contract Readiness Audit</h2>
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: bold; width: 35%;">Company Name:</td>
-                    <td style="padding: 8px 0;">${companyName}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: bold;">Email:</td>
-                    <td style="padding: 8px 0;"><a href="mailto:${email}">${email}</a></td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: bold;">Audit Score:</td>
-                    <td style="padding: 8px 0; font-weight: 700; color: #10b981;">${score || 0}%</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: bold;">Hard Blockers:</td>
-                    <td style="padding: 8px 0; font-weight: 700; color: ${blockers > 0 ? '#ef4444' : '#10b981'};">${blockers || 0}</td>
-                  </tr>
-                </table>
-                <p style="font-size: 0.9rem; color: #6b7280;">Full audit responses are logged securely in your Supabase database dashboard.</p>
-              </div>
-            `
-          })
-        });
-      } catch (err) {
-        console.error('Graceful failure: Resend save-lead notification error:', err);
+  // 2. Send email notification via Resend if key is configured
+  let emailSent = false;
+  if (resendApiKey) {
+    try {
+      const emailRes = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'Janitorial Bid Helper <onboarding@resend.dev>',
+          to: ['operator@janitorialbidhelper.com', 'tysonseo@gmail.com'],
+          subject: `New Readiness Audit: ${companyName} (${score || 0}%)`,
+          html: `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;">
+              <h2 style="color: #10b981; margin-bottom: 20px; border-bottom: 2px solid #10b981; padding-bottom: 10px;">New Contract Readiness Audit</h2>
+              <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <tr>
+                  <td style="padding: 8px 0; font-weight: bold; width: 35%;">Company Name:</td>
+                  <td style="padding: 8px 0;">${companyName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; font-weight: bold;">Email:</td>
+                  <td style="padding: 8px 0;"><a href="mailto:${email}">${email}</a></td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; font-weight: bold;">Audit Score:</td>
+                  <td style="padding: 8px 0; font-weight: 700; color: #10b981;">${score || 0}%</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; font-weight: bold;">Hard Blockers:</td>
+                  <td style="padding: 8px 0; font-weight: 700; color: ${blockers > 0 ? '#ef4444' : '#10b981'};">${blockers || 0}</td>
+                </tr>
+              </table>
+              <p style="font-size: 0.9rem; color: #6b7280;">Full audit responses are logged securely in your Supabase database dashboard.</p>
+            </div>
+          `
+        })
+      });
+      if (emailRes.ok) {
+        emailSent = true;
       }
+    } catch (err) {
+      console.error('Graceful failure: Resend save-lead notification error:', err);
     }
+  }
 
-    return res.status(200).json({ success: true, data });
+  return res.status(200).json({ success: true, dbSaved, emailSent, data: dbData });
   } catch (error: any) {
     console.error('Supabase save-lead error:', error);
     return res.status(500).json({ error: error.message || 'Failed to save lead to database.' });
