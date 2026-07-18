@@ -805,8 +805,17 @@ export function Success() {
    ============================================================================ */
 
 export function Contact() {
+  const [searchParams] = useSearchParams();
+  const promo = searchParams.get('promo');
   const [submitted, setSubmitted] = useState(false);
-  const [formData, setFormData] = useState({ name: '', company: '', email: '', message: '', hasSolicitation: 'No' });
+  const [formData, setFormData] = useState({ 
+    name: '', 
+    company: '', 
+    email: '', 
+    message: '', 
+    hasSolicitation: 'No',
+    reason: promo === 'beta-partner' ? 'Applying for the Free Beta Partner Program' : 'General Inquiry'
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -884,6 +893,22 @@ export function Contact() {
                   value={formData.email}
                   onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
                 />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Reason for Reaching Out</label>
+                <select 
+                  className="form-select"
+                  value={formData.reason}
+                  onChange={e => setFormData(prev => ({ ...prev, reason: e.target.value }))}
+                >
+                  <option value="Applying for the Free Beta Partner Program">Applying for the Free Beta Partner Program (100% Free)</option>
+                  <option value="Bid-Ready Company Setup">Bid-Ready Company Setup ($1,500)</option>
+                  <option value="Commercial Bid Analysis">Commercial Bid Analysis ($750)</option>
+                  <option value="Complex Bid Analysis">Complex Bid Analysis ($1,500)</option>
+                  <option value="Contract Radar Subscription">Contract Radar Subscription</option>
+                  <option value="General Inquiry">General Inquiry / Other</option>
+                </select>
               </div>
 
               <div className="form-group">
