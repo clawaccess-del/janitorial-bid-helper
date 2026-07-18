@@ -3,6 +3,8 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const resendApiKey = process.env.RESEND_API_KEY;
+const fromEmail = process.env.NOTIFICATION_FROM_EMAIL || 'Janitorial Bid Helper <onboarding@resend.dev>';
+const toEmail = process.env.NOTIFICATION_TO_EMAIL || 'tysonseo@gmail.com';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Enable CORS
@@ -77,8 +79,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          from: 'Janitorial Bid Helper <onboarding@resend.dev>',
-          to: ['operator@janitorialbidhelper.com', 'tysonseo@gmail.com'],
+          from: fromEmail,
+          to: toEmail.includes(',') ? toEmail.split(',').map(s => s.trim()) : toEmail.trim(),
           subject: `New Readiness Audit: ${companyName} (${score || 0}%)`,
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;">
