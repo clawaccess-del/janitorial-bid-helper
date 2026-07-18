@@ -824,7 +824,7 @@ export function Contact() {
 
   return (
     <div className="container" style={{ padding: '4rem 1.5rem' }}>
-      <div className="grid grid-2col align-center">
+      <div className="grid grid-2col-equal align-center">
         <div>
           <span style={{ color: 'var(--primary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.9rem' }}>Get in Touch</span>
           <h1 style={{ marginTop: '0.5rem' }}>Let&apos;s Discuss Your Next Bid</h1>

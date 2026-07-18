@@ -411,8 +411,14 @@ footer {
   gap: 2rem;
 }
 
+.grid-2col-equal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
 @media (max-width: 900px) {
-  .grid-2col {
+  .grid-2col, .grid-2col-equal {
     grid-template-columns: 1fr;
   }
 }
