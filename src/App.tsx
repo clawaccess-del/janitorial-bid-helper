@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield } from 'lucide-react';
-import { Home, HowItWorks, CompanySetup, BidBuilder, ContractRadar, Methodology, Security, Pricing, Contact } from './pages/StaticPages';
+import { Home, HowItWorks, CompanySetup, BidBuilder, ContractRadar, Methodology, Security, Pricing, Contact, Success } from './pages/StaticPages';
 import ReadinessAssessmentTool from './pages/ReadinessAssessmentTool';
 
 function Navigation() {
@@ -61,6 +61,7 @@ export default function App() {
             <Route path="/pricing/" element={<Pricing />} />
             <Route path="/contact/" element={<Contact />} />
             <Route path="/government-contract-readiness-assessment/" element={<ReadinessAssessmentTool />} />
+            <Route path="/success" element={<Success />} />
           </Routes>
         </main>
 

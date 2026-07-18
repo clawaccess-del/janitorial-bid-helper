@@ -139,21 +139,43 @@ export default function ReadinessAssessmentTool() {
     nextActionText = 'Create a custom preparation plan and resources list. You have several operational gaps to close before bidding on public contracts.';
   }
 
-  const handleLeadSubmit = (e: React.FormEvent) => {
+  const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !companyName) return;
     setIsSubmittingLead(true);
-    setTimeout(() => {
-      setIsSubmittingLead(false);
-      setLeadSaved(true);
-      if (classification === 'READY') {
-        confetti({
-          particleCount: 150,
-          spread: 80,
-          origin: { y: 0.6 }
-        });
+    try {
+      const response = await fetch('/api/save-lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          companyName,
+          email,
+          score: Math.round(weightedScore * 100),
+          blockers: hardBlockersCount,
+          answers
+        })
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setLeadSaved(true);
+        if (classification === 'READY') {
+          confetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { y: 0.6 }
+          });
+        }
+      } else {
+        alert(data.error || 'Failed to save audit report.');
       }
-    }, 1000);
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred while saving your audit report. Please try again.');
+    } finally {
+      setIsSubmittingLead(false);
+    }
   };
 
   const progressPercentage = Math.round((currentStep / totalQuestions) * 100);

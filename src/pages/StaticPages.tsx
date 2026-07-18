@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Shield, CheckCircle, FileText, ArrowRight, Clock, UserCheck, AlertOctagon, Mail, MapPin, Phone, DollarSign, BookOpen, Layers } from 'lucide-react';
 
 /* ============================================================================
@@ -538,58 +538,153 @@ export function Security() {
 /* ============================================================================
    8. PRICING
    ============================================================================ */
-
 export function Pricing() {
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  const handleCheckout = async (planName: string, priceAmount: number, mode: 'payment' | 'subscription' = 'payment') => {
+    setLoadingPlan(planName);
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          planName,
+          priceAmount,
+          mode
+        })
+      });
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || 'Failed to initiate checkout.');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('An error occurred during checkout.');
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
+
   return (
     <div className="container" style={{ padding: '4rem 1.5rem' }}>
       <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
         <span style={{ color: 'var(--primary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.9rem' }}>Simple Offers</span>
         <h1 style={{ marginTop: '0.5rem' }}>Service Engagement Plans</h1>
-        <p style={{ maxWidth: '600px', margin: '0 auto' }}>Clear, transparent pricing calibrated through our pilot candidate workbook.</p>
+        <p style={{ maxWidth: '600px', margin: '0 auto' }}>Clear, transparent pricing with no hidden ranges or administrative surprises.</p>
       </div>
 
+      {/* SECTION 1: ONBOARDING & PROPOSAL SERVICES */}
+      <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', color: '#ffffff', fontFamily: 'var(--font-display)' }}>
+        Onboarding & Bidding Services
+      </h2>
       <div className="grid grid-cols-3 gap-3" style={{ marginBottom: '4rem' }}>
+        {/* Bid-Ready Setup */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
           <h3>Bid-Ready Setup</h3>
           <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-display)', margin: '1rem 0' }}>
             $1,500 <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 400 }}>One-time</span>
           </div>
           <p style={{ fontSize: '0.9rem', flexGrow: 1 }}>
-            Structured onboarding, capability statement, policies library, SAM.gov registration check, and one real opportunity analysis.
+            Full administrative onboarding, capability statement design, custom policies library, SAM.gov audit, and database pricing workbook.
           </p>
-          <Link to="/government-contract-readiness-assessment/" className="btn btn-secondary" style={{ width: '100%', marginTop: '1.5rem' }}>
-            Select Setup
-          </Link>
+          <button 
+            disabled={loadingPlan !== null}
+            onClick={() => handleCheckout('Bid-Ready Setup', 150000, 'payment')}
+            className="btn btn-secondary" 
+            style={{ width: '100%', marginTop: '1.5rem' }}
+          >
+            {loadingPlan === 'Bid-Ready Setup' ? 'Loading...' : 'Select Setup'}
+          </button>
         </div>
 
+        {/* Commercial Bid Analysis */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column', border: '1px solid var(--primary-hover)' }}>
-          <h3>Opportunity Analysis</h3>
+          <h3>Commercial Bid Analysis</h3>
           <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-display)', margin: '1rem 0' }}>
-            $750 - $2,500 <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 400 }}>Per bid</span>
+            $750 <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 400 }}>Per bid</span>
           </div>
           <p style={{ fontSize: '0.9rem', flexGrow: 1 }}>
-            Full compliance matrix, bid/no-bid decisions, deterministic pricing models, proposal drafting, QA checkpoints, and submission checklist.
+            Compliance matrix, local prevailing wage checks, overhead pricing calculations, proposal drafting, and submission checklist for commercial and local municipal tenders.
           </p>
-          <Link to="/contact/" className="btn btn-primary" style={{ width: '100%', marginTop: '1.5rem' }}>
-            Analyze Opportunity
-          </Link>
+          <button 
+            disabled={loadingPlan !== null}
+            onClick={() => handleCheckout('Commercial Bid Analysis', 75000, 'payment')}
+            className="btn btn-primary" 
+            style={{ width: '100%', marginTop: '1.5rem' }}
+          >
+            {loadingPlan === 'Commercial Bid Analysis' ? 'Loading...' : 'Select Analysis'}
+          </button>
         </div>
 
+        {/* Complex Bid Analysis */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
-          <h3>Contract Radar</h3>
+          <h3>Complex Bid Analysis</h3>
           <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-display)', margin: '1rem 0' }}>
-            $199 - $399 <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 400 }}>Per month</span>
+            $1,500 <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 400 }}>Per bid</span>
           </div>
           <p style={{ fontSize: '0.9rem', flexGrow: 1 }}>
-            Early access waitlist. Custom opportunity alerts, deadline reminders, addenda comparisons, and target solicitation monitoring.
+            Advanced compliance reviews, federal SAM.gov RFPs, healthcare sanitation requirements, security clearance processing, and union/CBA compliance checks.
           </p>
-          <Link to="/contract-radar/" className="btn btn-secondary" style={{ width: '100%', marginTop: '1.5rem' }}>
-            Join Waitlist
-          </Link>
+          <button 
+            disabled={loadingPlan !== null}
+            onClick={() => handleCheckout('Complex Bid Analysis', 150000, 'payment')}
+            className="btn btn-secondary" 
+            style={{ width: '100%', marginTop: '1.5rem' }}
+          >
+            {loadingPlan === 'Complex Bid Analysis' ? 'Loading...' : 'Select Analysis'}
+          </button>
         </div>
       </div>
 
-      <div className="card">
+      {/* SECTION 2: SMART OPPORTUNITY ALERTS */}
+      <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', color: '#ffffff', fontFamily: 'var(--font-display)' }}>
+        Smart Opportunity Monitoring
+      </h2>
+      <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '4rem' }}>
+        {/* Metro Radar */}
+        <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
+          <h3>Metro Radar</h3>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-display)', margin: '1rem 0' }}>
+            $199 <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 400 }}>Per month</span>
+          </div>
+          <p style={{ fontSize: '0.9rem', flexGrow: 1 }}>
+            Real-time janitorial bid alerts, deadline reminders, and amendment tracking targeted strictly to your primary metropolitan area and local counties.
+          </p>
+          <button 
+            disabled={loadingPlan !== null}
+            onClick={() => handleCheckout('Metro Radar Subscription', 19900, 'subscription')}
+            className="btn btn-secondary" 
+            style={{ width: '100%', marginTop: '1.5rem' }}
+          >
+            {loadingPlan === 'Metro Radar Subscription' ? 'Loading...' : 'Subscribe'}
+          </button>
+        </div>
+
+        {/* Statewide Radar */}
+        <div className="card" style={{ display: 'flex', flexDirection: 'column', border: '1px solid var(--primary-hover)' }}>
+          <h3>Statewide Radar</h3>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-display)', margin: '1rem 0' }}>
+            $399 <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 400 }}>Per month</span>
+          </div>
+          <p style={{ fontSize: '0.9rem', flexGrow: 1 }}>
+            Full-state monitoring, multi-state tenders, airport authority bids, state university system alerts, and advanced filtering for specialized facility tenders.
+          </p>
+          <button 
+            disabled={loadingPlan !== null}
+            onClick={() => handleCheckout('Statewide Radar Subscription', 39900, 'subscription')}
+            className="btn btn-primary" 
+            style={{ width: '100%', marginTop: '1.5rem' }}
+          >
+            {loadingPlan === 'Statewide Radar Subscription' ? 'Loading...' : 'Subscribe'}
+          </button>
+        </div>
+      </div>
+
+      <div className="card" style={{ marginBottom: '4rem' }}>
         <h3 style={{ marginBottom: '1rem' }}>Pricing Exclusions</h3>
         <p style={{ fontSize: '0.95rem', margin: 0 }}>
           We focus strictly on routine commercial office and public facility janitorial bids. Healthcare, hazardous remediation, airport terminals, high-security sites, or CBA union contracts are excluded or handled on an escalation-only basis.
@@ -599,7 +694,39 @@ export function Pricing() {
   );
 }
 
-/* ============================================================================
+export function Success() {
+  const [searchParams] = useSearchParams();
+  const sessionId = searchParams.get('session_id') || '';
+  const plan = searchParams.get('plan') || 'Service Engagement';
+
+  return (
+    <div className="container" style={{ padding: '6rem 1.5rem', textAlign: 'center' }}>
+      <div className="glass-panel" style={{ maxWidth: '600px', margin: '0 auto', padding: '3.5rem 2rem' }}>
+        <CheckCircle size={64} style={{ color: 'var(--primary)', marginBottom: '1.5rem' }} />
+        <h1 style={{ fontSize: '2.25rem', marginBottom: '1rem', fontFamily: 'var(--font-display)' }}>Payment Successful!</h1>
+        <p style={{ fontSize: '1.1rem', color: '#ffffff', marginBottom: '2rem' }}>
+          Thank you for purchasing the <strong>{plan}</strong>. Your payment was processed successfully.
+        </p>
+        <div style={{ borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '1.5rem 0', marginBottom: '2rem', textAlign: 'left', fontSize: '0.95rem' }}>
+          <h3 style={{ marginBottom: '0.75rem', color: '#ffffff' }}>Next Steps:</h3>
+          <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', paddingLeft: '1.25rem', color: 'var(--text-secondary)' }}>
+            <li>An onboarding email has been sent to your registered address.</li>
+            <li>Our operations team will set up your workspace within 2 hours.</li>
+            <li>If you have a live solicitation document, please prepare to upload it in your workspace.</li>
+          </ul>
+        </div>
+        {sessionId && (
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '2rem' }}>
+            Receipt Reference: <code style={{ backgroundColor: 'rgba(255,255,255,0.05)', padding: '0.2rem 0.4rem', borderRadius: '4px' }}>{sessionId}</code>
+          </div>
+        )}
+        <Link to="/" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+          Return Home <ArrowRight size={16} />
+        </Link>
+      </div>
+    </div>
+  );
+}/* ============================================================================
    9. CONTACT
    ============================================================================ */
 
